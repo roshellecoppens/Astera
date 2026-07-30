@@ -143,12 +143,14 @@
     <ClCompile Include="ActivityDatabase.cpp" />
     <ClCompile Include="Astera.cpp" />
     <ClCompile Include="User.h" />
+    <ClCompile Include="UserProfileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Activity.h" />
     <ClInclude Include="ActivityDatabase.h" />
     <ClInclude Include="ScheduleItem.h" />
     <ClInclude Include="Trait.h" />
+    <ClInclude Include="UserProfileManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

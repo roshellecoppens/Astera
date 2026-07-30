@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "User.h"
+#include "UserProfileManager.h"
 #include "Activity.h"
 #include "ActivityDatabase.h"
 #include "Trait.h"
@@ -348,10 +349,14 @@ int main()
 
     User user;
 
+    UserProfileManager profileManager;
+
     user.name = askName();
     user.mood = askMood();
     user.budget = askBudget();
     user.goals = askGoals();
+
+    profileManager.saveUser(user);
 
 
     // Loads the activity database and retrieves all activities
