@@ -272,6 +272,74 @@ vector<ScheduleItem> createDailyPlan(const vector<Activity>& activities, const U
     return plan;
 }
 
+// Stores an activity together with its recommendation score
+// Allows Astera to rank activities from most suitable to least suitable
+struct ScoredActivity
+{
+    Activity activity;
+    int score;
+};
+
+// Calculates scores for all activities and ranks them from most suitable to least suitable
+vector<ScoredActivity> rankActivities(
+    const vector<Activity>& activities,
+    const User& user)
+{
+        vector<ScoredActivity> rankedActivities;
+
+        for (const Activity& activity : activities)
+        {
+            int score = calculateScore(activity, user);
+
+            if (score > 0)
+            {
+                ScoredActivity scored;
+
+                scored.activity = activity;
+                scored.score = score;
+
+                rankedActivities.push_back(scored);
+            }
+        }
+
+        sort(rankedActivities.begin(), rankedActivities.end(),
+            [](const ScoredActivity & a, const ScoredActivity & b)
+        {
+            return a.score > b.score;
+        });
+            
+        return rankedActivities;
+}
+
+// Creates a daily plan using ranked activities
+// Sorts the final schedule into chronological order
+vector<ScheduleItem> createRankedPlan(
+    const vector<ScoredActivity>& rankedActivities)
+{
+    vector<ScheduleItem> plan;
+
+
+    for (const ScoredActivity& scored : rankedActivities)
+    {
+        ScheduleItem item;
+
+        item.activity = scored.activity;
+        item.time = chooseTime(scored.activity);
+
+        plan.push_back(item);
+    }
+
+
+    sort(plan.begin(), plan.end(),
+        [](const ScheduleItem& a, const ScheduleItem& b)
+        {
+            return a.time < b.time;
+        });
+
+
+    return plan;
+}
+
 
 int main()
 {
@@ -351,11 +419,25 @@ int main()
     activities.push_back(salsaClass);
 
 
+    // Ranks activities based on scores calculated from the user's preferences
+    vector<ScoredActivity> ranked = rankActivities(activities, user);
+
+
+    cout << "\nAstera Ranking:\n\n";
+
+
+    for (const ScoredActivity& item : ranked)
+    {
+        cout << item.activity.name
+            << " - Score: "
+            << item.score
+            << "\n";
+    }
+
 
     recommendActivities(activities, user);
 
-
-    vector<ScheduleItem> dailyPlan = createDailyPlan(activities, user);
+    vector<ScheduleItem> dailyPlan = createRankedPlan(ranked);
 
     displayPlan(dailyPlan);
 
