@@ -97,20 +97,34 @@ int askBudget()
 }
 
 
-// Collects personal qualities the user wants to develop
+// Asks the user for personal qualities they want to develop
 vector<string> askGoals()
 {
     vector<string> goals;
 
     string goal;
 
+
     cout << "\nWhat qualities would you like to develop?\n";
     cout << "Example: confidence, curiosity, discipline\n";
-    cout << "Enter one goal:\n";
+    cout << "Type 'done' when finished.\n\n";
 
-    cin >> goal;
 
-    goals.push_back(goal);
+    while (true)
+    {
+        cout << "Enter a goal: ";
+        cin >> goal;
+
+
+        if (toLower(goal) == "done")
+        {
+            break;
+        }
+
+
+        goals.push_back(goal);
+    }
+
 
     return goals;
 }
