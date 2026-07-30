@@ -216,17 +216,18 @@ void recommendActivities(const vector<Activity>& activities, const User& user)
     }
 }
 
-// Assigns a suitable time of day based on activity type
+// Assigns starting times based on activity type
+// Prevents activities from feeling randomly placed
 string chooseTime(const Activity& activity)
 {
-    if (activity.category == "Fitness")
-    {
-        return "18:30";
-    }
-
-    else if (activity.category == "Learning")
+    if (activity.category == "Learning")
     {
         return "10:00";
+    }
+
+    else if (activity.category == "Fitness")
+    {
+        return "18:30";
     }
 
     else if (activity.category == "Dance")
@@ -236,8 +237,29 @@ string chooseTime(const Activity& activity)
 
     else
     {
-        return "11:00";
+        return "12:00";
     }
+}
+
+// Generates times sequentially so activities cannot overlap
+string generateTime(int index)
+{
+    vector<string> availableTimes =
+    {
+        "10:00",
+        "13:00",
+        "16:00",
+        "18:30",
+        "19:00"
+    };
+
+
+    if (index < availableTimes.size())
+    {
+        return availableTimes[index];
+    }
+
+    return "20:00";
 }
 
 // Creates a simple day plan
@@ -256,7 +278,7 @@ vector<ScheduleItem> createDailyPlan(const vector<Activity>& activities, const U
             ScheduleItem item;
 
             item.activity = activity;
-            item.time = chooseTime(activity);
+            item.time = generateTime(plan.size());
 
             plan.push_back(item);
         }
@@ -311,6 +333,24 @@ vector<ScoredActivity> rankActivities(
         return rankedActivities;
 }
 
+// Selects the highest scoring activities for the user's day
+// Prevents Astera from overwhelming the user with too many choices
+vector<ScoredActivity> getTopActivities(
+    const vector<ScoredActivity>& rankedActivities,
+    int amount)
+{
+    vector<ScoredActivity> topActivities;
+
+
+    for (int i = 0; i < amount && i < rankedActivities.size(); i++)
+    {
+        topActivities.push_back(rankedActivities[i]);
+    }
+
+
+    return topActivities;
+}
+
 // Creates a daily plan using ranked activities
 // Sorts the final schedule into chronological order
 vector<ScheduleItem> createRankedPlan(
@@ -324,7 +364,7 @@ vector<ScheduleItem> createRankedPlan(
         ScheduleItem item;
 
         item.activity = scored.activity;
-        item.time = chooseTime(scored.activity);
+        item.time = generateTime(plan.size());
 
         plan.push_back(item);
     }
@@ -436,8 +476,9 @@ int main()
 
 
     recommendActivities(activities, user);
-
-    vector<ScheduleItem> dailyPlan = createRankedPlan(ranked);
+    
+    vector<ScoredActivity> topActivities = getTopActivities(ranked, 3);
+    vector<ScheduleItem> dailyPlan = createRankedPlan(topActivities);
 
     displayPlan(dailyPlan);
 

@@ -7,10 +7,11 @@
 class Activity
 {
 public:
+    Activity() noexcept : cost(0.0), duration(0) { }
 
     std::string name;
     std::string mood;
-    int cost;
+    double cost;
     std::string category;
 
     std::vector<std::string> develops;
