@@ -351,12 +351,33 @@ int main()
 
     UserProfileManager profileManager;
 
-    user.name = askName();
-    user.mood = askMood();
-    user.budget = askBudget();
-    user.goals = askGoals();
 
-    profileManager.saveUser(user);
+    if (profileManager.profileExists())
+    {
+        cout << "Saved profile found.\n\n";
+
+        user = profileManager.loadUser();
+
+        cout << "Welcome back "
+            << user.name
+            << "!\n\n";
+    }
+    else
+    {
+        cout << "Creating new profile.\n\n";
+
+
+        user.name = askName();
+        user.mood = askMood();
+        user.budget = askBudget();
+        user.goals = askGoals();
+
+
+        profileManager.saveUser(user);
+
+
+        cout << "\nProfile saved successfully.\n";
+    }
 
 
     // Loads the activity database and retrieves all activities

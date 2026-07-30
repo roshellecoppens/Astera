@@ -1,6 +1,5 @@
 Emma
-fun
-10
+good
+20
 confidence
-creativity
-don
+curiosity

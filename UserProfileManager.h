@@ -15,4 +15,6 @@ public:
 
     User loadUser();
 
+    bool profileExists();
+
 };
