@@ -140,11 +140,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Activity.cpp" />
+    <ClCompile Include="ActivityDatabase.cpp" />
     <ClCompile Include="Astera.cpp" />
     <ClCompile Include="User.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Activity.h" />
+    <ClInclude Include="ActivityDatabase.h" />
     <ClInclude Include="ScheduleItem.h" />
     <ClInclude Include="Trait.h" />
   </ItemGroup>

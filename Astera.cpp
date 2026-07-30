@@ -5,6 +5,7 @@
 
 #include "User.h"
 #include "Activity.h"
+#include "ActivityDatabase.h"
 #include "Trait.h"
 #include "ScheduleItem.h"
 
@@ -230,29 +231,26 @@ void recommendActivities(const vector<Activity>& activities, const User& user)
     }
 }
 
-// Assigns starting times based on activity type
-// Prevents activities from feeling randomly placed
-string chooseTime(const Activity& activity)
+// Generates unique schedule times
+// Prevents multiple activities being assigned to the same time
+string generateTime(int index)
 {
-    if (activity.category == "Learning")
+    vector<string> availableTimes =
     {
-        return "10:00";
+        "10:00",
+        "13:00",
+        "16:00",
+        "18:30",
+        "19:00"
+    };
+
+
+    if (index < availableTimes.size())
+    {
+        return availableTimes[index];
     }
 
-    else if (activity.category == "Fitness")
-    {
-        return "18:30";
-    }
-
-    else if (activity.category == "Dance")
-    {
-        return "19:00";
-    }
-
-    else
-    {
-        return "12:00";
-    }
+    return "20:00";
 }
 
 // Stores an activity together with its recommendation score
@@ -325,7 +323,8 @@ vector<ScheduleItem> createRankedPlan(
         ScheduleItem item;
 
         item.activity = scored.activity;
-        item.time = scored.activity.preferredTime;
+
+        item.time = generateTime(plan.size());
 
         plan.push_back(item);
     }
@@ -355,73 +354,9 @@ int main()
     user.goals = askGoals();
 
 
-
-    Activity museum;
-
-    museum.name = "Visit a museum";
-    museum.mood = "curious";
-    museum.cost = 0;
-    museum.category = "Learning";
-    museum.duration = 120;
-    museum.preferredTime = "10:00";
-
-    museum.develops.push_back("Knowledge");
-    museum.develops.push_back("Curiosity");
-    museum.develops.push_back("Creativity");
-
-
-
-    Activity library;
-
-    library.name = "Visit a library";
-    library.mood = "studious";
-    library.cost = 0;
-    library.category = "Learning";
-    library.duration = 90;
-    library.preferredTime = "13:00";
-
-    library.develops.push_back("Research Skills");
-    library.develops.push_back("Patience");
-    library.develops.push_back("Curiosity");
-
-
-
-    Activity eveningRun;
-
-    eveningRun.name = "Go for an evening run";
-    eveningRun.mood = "productive";
-    eveningRun.cost = 0;
-    eveningRun.category = "Fitness";
-    eveningRun.duration = 35;
-    eveningRun.preferredTime = "18:30";
-
-    eveningRun.develops.push_back("Discipline");
-    eveningRun.develops.push_back("Resilience");
-    eveningRun.develops.push_back("Clarity");
-
-
-
-    Activity salsaClass;
-
-    salsaClass.name = "Beginner salsa class";
-    salsaClass.mood = "fun";
-    salsaClass.cost = 8;
-    salsaClass.category = "Dance";
-    salsaClass.duration = 120;
-    salsaClass.preferredTime = "19:00";
-
-    salsaClass.develops.push_back("Coordination");
-    salsaClass.develops.push_back("Confidence");
-    salsaClass.develops.push_back("Rhythm");
-
-
-
-    vector<Activity> activities;
-
-    activities.push_back(museum);
-    activities.push_back(library);
-    activities.push_back(eveningRun);
-    activities.push_back(salsaClass);
+    // Loads the activity database and retrieves all activities
+    ActivityDatabase database;
+    vector<Activity> activities = database.getActivities();
 
 
     // Ranks activities based on scores calculated from the user's preferences

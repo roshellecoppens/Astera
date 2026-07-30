@@ -3,18 +3,15 @@
 #include <string>
 #include "Activity.h"
 
+using namespace std;
+
 
 class ScheduleItem
 {
 public:
 
-    // Time the activity happens
     string time;
 
-    // The planned activity
     Activity activity;
-
-    // Why this time was chosen
-    string partOfDay;
 
 };
