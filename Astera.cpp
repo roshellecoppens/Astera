@@ -241,59 +241,6 @@ string chooseTime(const Activity& activity)
     }
 }
 
-// Generates times sequentially so activities cannot overlap
-string generateTime(int index)
-{
-    vector<string> availableTimes =
-    {
-        "10:00",
-        "13:00",
-        "16:00",
-        "18:30",
-        "19:00"
-    };
-
-
-    if (index < availableTimes.size())
-    {
-        return availableTimes[index];
-    }
-
-    return "20:00";
-}
-
-// Creates a simple day plan
-vector<ScheduleItem> createDailyPlan(const vector<Activity>& activities, const User& user)
-{
-    vector<ScheduleItem> plan;
-
-
-    for (const Activity& activity : activities)
-    {
-        int score = calculateScore(activity, user);
-
-
-        if (score > 0)
-        {
-            ScheduleItem item;
-
-            item.activity = activity;
-            item.time = generateTime(plan.size());
-
-            plan.push_back(item);
-        }
-    }
-
-    sort(plan.begin(), plan.end(),
-        [](const ScheduleItem& a, const ScheduleItem& b)
-        {
-            return a.time < b.time;
-        });
-
-
-    return plan;
-}
-
 // Stores an activity together with its recommendation score
 // Allows Astera to rank activities from most suitable to least suitable
 struct ScoredActivity
@@ -364,7 +311,7 @@ vector<ScheduleItem> createRankedPlan(
         ScheduleItem item;
 
         item.activity = scored.activity;
-        item.time = generateTime(plan.size());
+        item.time = scored.activity.preferredTime;
 
         plan.push_back(item);
     }
@@ -402,6 +349,7 @@ int main()
     museum.cost = 0;
     museum.category = "Learning";
     museum.duration = 120;
+    museum.preferredTime = "10:00";
 
     museum.develops.push_back("Knowledge");
     museum.develops.push_back("Curiosity");
@@ -416,6 +364,7 @@ int main()
     library.cost = 0;
     library.category = "Learning";
     library.duration = 90;
+    library.preferredTime = "13:00";
 
     library.develops.push_back("Research Skills");
     library.develops.push_back("Patience");
@@ -430,6 +379,7 @@ int main()
     eveningRun.cost = 0;
     eveningRun.category = "Fitness";
     eveningRun.duration = 35;
+    eveningRun.preferredTime = "18:30";
 
     eveningRun.develops.push_back("Discipline");
     eveningRun.develops.push_back("Resilience");
@@ -444,6 +394,7 @@ int main()
     salsaClass.cost = 8;
     salsaClass.category = "Dance";
     salsaClass.duration = 120;
+    salsaClass.preferredTime = "19:00";
 
     salsaClass.develops.push_back("Coordination");
     salsaClass.develops.push_back("Confidence");

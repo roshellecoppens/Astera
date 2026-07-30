@@ -3,19 +3,17 @@
 #include <string>
 #include <vector>
 
+using namespace std;
 
-class Activity
+struct Activity
 {
-public:
-    Activity() noexcept : cost(0.0), duration(0) { }
-
-    std::string name;
-    std::string mood;
-    double cost;
-    std::string category;
-
-    std::vector<std::string> develops;
-
-    // Estimated time required in minutes
+    string name;
+    string mood;
+    int cost;
+    string category;
     int duration;
+
+    string preferredTime;
+
+    vector<string> develops;
 };
