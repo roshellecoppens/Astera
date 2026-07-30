@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="Astera.vcxproj" />
+  <Project Path="Astera.vcxproj" Id="175aac50-4924-4227-b49e-e69299754c61" />
 </Solution>
