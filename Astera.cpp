@@ -342,6 +342,42 @@ vector<ScheduleItem> createRankedPlan(
 }
 
 
+// Displays a menu for the user if it exists, and asks them to choose how to proceed with their profile
+int profileMenu()
+{
+    int choice;
+
+    cout << "\nWhat would you like to do?\n";
+
+    cout << "1. Continue with saved profile\n";
+    cout << "2. Update profile\n";
+    cout << "3. Create new profile\n\n";
+
+    cout << "Choice: ";
+
+    cin >> choice;
+
+    return choice;
+}
+
+
+User updateProfile(User user)
+{
+    cout << "\nUpdating profile...\n\n";
+
+    cout << "New mood:\n";
+    cin >> user.mood;
+
+    cout << "New budget:\n";
+    cin >> user.budget;
+
+    user.goals = askGoals();
+
+    return user;
+}
+
+
+
 int main()
 {
     welcomeUser();
@@ -351,7 +387,12 @@ int main()
 
     UserProfileManager profileManager;
 
+    user.name = askName();
+    user.mood = askMood();
+    user.budget = askBudget();
+    user.goals = askGoals();
 
+<<<<<<< HEAD
     if (profileManager.profileExists())
     {
         cout << "Saved profile found.\n\n";
@@ -360,11 +401,34 @@ int main()
 
         cout << "Welcome back "
             << user.name
-            << "!\n\n";
+            << "!\n";
+
+        int choice = profileMenu();
+
+        if (choice == 2)
+        {
+            user = updateProfile(user);
+            profileManager.saveUser(user);
+            cout << "\nProfile updated.\n";
+        }
+
+        else if (choice == 3)
+        {
+            cout << "\nReplacing saved profile...\n\n";
+
+            user.name = askName();
+            user.mood = askMood();
+            user.budget = askBudget();
+            user.goals = askGoals();
+
+            profileManager.saveUser(user);
+            
+        }
+
     }
     else
     {
-        cout << "Creating new profile.\n\n";
+        cout << "Creating new profile...\n\n";
 
 
         user.name = askName();
@@ -372,12 +436,14 @@ int main()
         user.budget = askBudget();
         user.goals = askGoals();
 
-
         profileManager.saveUser(user);
 
 
         cout << "\nProfile saved successfully.\n";
     }
+=======
+    profileManager.saveUser(user);
+>>>>>>> parent of 30aacaa (Astera v1.9 persistent user profiles)
 
 
     // Loads the activity database and retrieves all activities

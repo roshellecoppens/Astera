@@ -65,11 +65,3 @@ User UserProfileManager::loadUser()
 
     return user;
 }
-
-// Checks whether a saved profile already exists
-bool UserProfileManager::profileExists()
-{
-    ifstream file("user_profile.txt");
-
-    return file.good();
-}

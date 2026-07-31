@@ -1,5 +1,10 @@
 Emma
-good
-20
+fun
+10
 confidence
-curiosity
+<<<<<<< HEAD
+creativity
+=======
+creativity
+don
+>>>>>>> parent of 30aacaa (Astera v1.9 persistent user profiles)
