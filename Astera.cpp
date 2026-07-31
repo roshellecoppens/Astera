@@ -387,47 +387,66 @@ int main()
 
     UserProfileManager profileManager;
 
-    user.name = askName();
-    user.mood = askMood();
-    user.budget = askBudget();
-    user.goals = askGoals();
 
-<<<<<<< HEAD
     if (profileManager.profileExists())
     {
         cout << "Saved profile found.\n\n";
 
         user = profileManager.loadUser();
 
+
         cout << "Welcome back "
             << user.name
             << "!\n";
 
+
         int choice = profileMenu();
 
-        if (choice == 2)
+
+        if (choice == 1)
+        {
+            cout << "\nContinuing with saved profile...\n";
+        }
+
+
+        else if (choice == 2)
         {
             user = updateProfile(user);
+
             profileManager.saveUser(user);
-            cout << "\nProfile updated.\n";
+
+            cout << "\nProfile updated successfully.\n";
         }
+
 
         else if (choice == 3)
         {
-            cout << "\nReplacing saved profile...\n\n";
+            cout << "\nCreating new profile...\n\n";
+
 
             user.name = askName();
             user.mood = askMood();
             user.budget = askBudget();
             user.goals = askGoals();
 
+
             profileManager.saveUser(user);
-            
+
+
+            cout << "\nNew profile saved successfully.\n";
         }
 
+
+        else
+        {
+            cout << "\nInvalid choice. Continuing with saved profile.\n";
+        }
     }
+
+
     else
     {
+        cout << "No saved profile found.\n";
         cout << "Creating new profile...\n\n";
 
 
@@ -436,23 +455,25 @@ int main()
         user.budget = askBudget();
         user.goals = askGoals();
 
+
         profileManager.saveUser(user);
 
 
         cout << "\nProfile saved successfully.\n";
     }
-=======
-    profileManager.saveUser(user);
->>>>>>> parent of 30aacaa (Astera v1.9 persistent user profiles)
+
 
 
     // Loads the activity database and retrieves all activities
     ActivityDatabase database;
+
     vector<Activity> activities = database.getActivities();
+
 
 
     // Ranks activities based on scores calculated from the user's preferences
     vector<ScoredActivity> ranked = rankActivities(activities, user);
+
 
 
     cout << "\nAstera Ranking:\n\n";
@@ -467,12 +488,19 @@ int main()
     }
 
 
+
     recommendActivities(activities, user);
-    
+
+
+
     vector<ScoredActivity> topActivities = getTopActivities(ranked, 3);
+
     vector<ScheduleItem> dailyPlan = createRankedPlan(topActivities);
 
+
+
     displayPlan(dailyPlan);
+
 
 
     return 0;

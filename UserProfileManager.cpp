@@ -1,5 +1,4 @@
 #include "UserProfileManager.h"
-
 #include <fstream>
 
 
@@ -64,4 +63,11 @@ User UserProfileManager::loadUser()
 
 
     return user;
+}
+
+// Checks if a saved profile exists
+bool UserProfileManager::profileExists()
+{
+    ifstream file("user_profile.txt");
+    return file.good();
 }
